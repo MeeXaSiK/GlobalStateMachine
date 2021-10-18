@@ -4,7 +4,7 @@ namespace NTC.Global.StateMachine
 {
     public sealed class NightStateMachineEntry : MonoBehaviour
     {
-        private void Awake()
+        private void Start()
         {
             NightStateMachine.Push(new RunningState());
         }
