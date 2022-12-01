@@ -1,4 +1,4 @@
-# NightStateMachine
+# StateMachine
 Lightweight State Machine for Unity
 
 ### HOW TO USE
@@ -8,7 +8,7 @@ Lightweight State Machine for Unity
 
 ### Using for MonoBehaviour
 
-```sh
+```csharp
     public class StateTest : StateMachineUser
     {
         protected override void OnAwake()
@@ -28,36 +28,9 @@ Lightweight State Machine for Unity
     }
 ```
 
-### Using for NightCache System
-
-```sh
-    public class StateTest : StateMachineUser, INightRun
-    {
-        public void Run() 
-        {
-            Debug.Log("Game is Running");
-        }
-        
-        protected override void OnInit()
-        {
-            Debug.Log("On Init");
-        }
-
-        protected override void OnGameLose()
-        {
-            Debug.Log("You Lose");
-        }
-
-        protected override void OnGameWin()
-        {
-            Debug.Log("You Won");
-        }
-    }
-```
-
 ### How to Push new State
 
-```sh
+```csharp
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.H))
@@ -69,7 +42,7 @@ Lightweight State Machine for Unity
 
 ### You can add new State in GameStates.cs
 
-```sh
+```csharp
     public abstract class GameState
     {
         private Type Type => cachedType ??= GetType();
@@ -88,7 +61,7 @@ Lightweight State Machine for Unity
 
 ### StateMachineUser.cs
 
-```sh
+```csharp
     public abstract class StateMachineUser : MonoBehaviour
     {
         private void Awake()
