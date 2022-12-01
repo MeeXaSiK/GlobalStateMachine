@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace NTC.Global.StateMachine
 {
-    public struct Subscriber
+    public readonly struct Subscriber
     {
-        public GameObject Owner { get; }
-        public Action Action { get; }
+        public readonly GameObject Owner;
+        public readonly Action Action;
 
-        public Subscriber(GameObject owner, Action action)
+        public Subscriber(GameObject owner, in Action action)
         {
             Owner = owner;
             Action = action;

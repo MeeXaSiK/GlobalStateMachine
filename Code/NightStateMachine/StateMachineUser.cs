@@ -7,6 +7,7 @@ namespace NTC.Global.StateMachine
         private void Awake()
         {
             BindCallbacks();
+            
             OnAwake();
         }
 
