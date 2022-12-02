@@ -1,19 +1,12 @@
-﻿using System;
-
-namespace NTC.Global.StateMachine
+﻿namespace NTC.Global.StateMachine
 {
     public abstract class GameState
     {
-        private readonly Type _type;
-
-        public GameState()
-        {
-            _type = GetType();
-        }
+        public virtual bool CanRepeat => true;
         
         public bool Is<T>() where T : GameState
         {
-            return _type == typeof(T);
+            return GetType() == typeof(T);
         }
     }
 }

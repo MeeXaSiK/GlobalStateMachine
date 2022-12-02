@@ -2,6 +2,6 @@
 {
     public sealed class LoseState : GameState
     {
-        
+        public override bool CanRepeat => false;
     }
 }

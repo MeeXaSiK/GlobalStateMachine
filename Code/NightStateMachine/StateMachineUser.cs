@@ -11,6 +11,13 @@ namespace NTC.Global.StateMachine
             OnAwake();
         }
 
+        private void OnDestroy()
+        {
+            NightStateMachine.RemoveSubscriber(gameObject);
+            
+            OnDestroyOverridable();
+        }
+
         private void BindCallbacks()
         {
             NightStateMachine.On<RunningState>(OnGameRun, gameObject);
@@ -18,8 +25,9 @@ namespace NTC.Global.StateMachine
             NightStateMachine.On<LoseState>(OnGameLose, gameObject);
             NightStateMachine.On<WinState, LoseState>(OnGameFinish, gameObject);
         }
-        
+
         protected virtual void OnAwake() { }
+        protected virtual void OnDestroyOverridable() { }
         protected virtual void OnGameRun() { }
         protected virtual void OnGameWin() { }
         protected virtual void OnGameLose() { }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using NTC.Global.System;
 using UnityEngine;
 
 namespace NTC.Global.StateMachine
 {
     public static class NightStateMachine
     {
-        private static readonly Dictionary<Type, List<Subscriber>> SubscribersMap = 
-            new Dictionary<Type, List<Subscriber>>(32);
+        private static readonly List<SubscribersData> SubscribersMap = 
+            new List<SubscribersData>(32);
         
         private static readonly List<GameState> PushedStates = 
             new List<GameState>(32);
@@ -16,15 +17,19 @@ namespace NTC.Global.StateMachine
 
         public static void On<TState>(in Action action, GameObject owner = null) where TState : GameState
         {
-            var type = typeof(TState);
-            var status = SubscribersMap.ContainsKey(type);
+            var index = GetInfo<TState>.Index;
+            var newSubscriber = new Subscriber(owner, action);
 
-            if (status == false)
+            if (TryGetSubscribersData<TState>(out var data) == false)
             {
-                SubscribersMap[type] = new List<Subscriber>();
-            }
+                data = new SubscribersData(index);
 
-            SubscribersMap[type].Add(new Subscriber(owner, action));
+                SubscribersMap.Add(data);
+            }
+            
+            data.Subscribers.Add(newSubscriber);
+            
+            Debug.Log("Added");
         }
 
         public static void On<TState1, TState2>(in Action action, GameObject owner = null) 
@@ -56,16 +61,21 @@ namespace NTC.Global.StateMachine
             On<TState3>(action, owner);
             On<TState4>(action, owner);
         }
+
+        public static void Push<TState>() where TState : GameState, new()
+        {
+            Push(new TState());
+        }
         
-        public static void Push(GameState gameState)
+        public static void Push<TState>(TState gameState) where TState : GameState
         {
             if (IsStatePossible(gameState) == false)
                 return;
 
             _lastGameState = gameState;
-            
             PushedStates.Add(gameState);
-            Execute(gameState.GetType());
+            
+            Execute<TState>();
         }
 
         public static bool WasPushed<TState>() where TState : GameState
@@ -83,49 +93,77 @@ namespace NTC.Global.StateMachine
             return false;
         }
 
+        public static void RemoveSubscriber(GameObject toRemove)
+        {
+            if (toRemove == null)
+            {
+                throw new NullReferenceException(nameof(toRemove), null);
+            }
+
+            for (var i = 0; i < SubscribersMap.Count; i++)
+            {
+                for (var j = 0; j < SubscribersMap[i].Subscribers.Count; j++)
+                {
+                    if (SubscribersMap[i].Subscribers[j].Owner == toRemove)
+                    {
+                        SubscribersMap[i].Subscribers.RemoveAt(j);
+                    }
+                }
+            }
+        }
+        
         public static void Reset()
         {
+            _lastGameState = null;
+            
             SubscribersMap.Clear();
             PushedStates.Clear();
         }
 
-        private static bool IsStatePossible(GameState gameState)
+        private static bool TryGetSubscribersData<TState>(out SubscribersData data) where TState : GameState
+        {
+            var index = GetInfo<TState>.Index;
+            
+            for (var i = 0; i < SubscribersMap.Count; i++)
+            {
+                if (SubscribersMap[i].Index == index)
+                {
+                    data = SubscribersMap[i];
+                    return true;
+                }
+            }
+
+            data = default;
+            return false;
+        }
+        
+        private static bool IsStatePossible<TState>(TState gameState) where TState : GameState
         {
             if (_lastGameState == null)
                 return true;
 
-            if (gameState.Is<WinState>() && WasPushed<WinState>())
-                return false;
-            
-            if (gameState.Is<LoseState>() && WasPushed<LoseState>())
+            if (gameState.CanRepeat == false && WasPushed<TState>())
                 return false;
 
             return true;
         }
 
-        private static void Execute(Type type)
+        private static void Execute<TState>() where TState : GameState
         {
-            var status = SubscribersMap.ContainsKey(type);
-
-            if (status == false)
-                return;
-            
-            if (SubscribersMap[type] == null)
-                return;
-
-            var count = SubscribersMap[type].Count;
-            
-            for (var i = 0; i < count; i++)
+            if (TryGetSubscribersData<TState>(out var data) == false)
             {
-                var subscriber = SubscribersMap[type][i];
-
-                if (subscriber.Action == null)
+                return;                
+            }
+            
+            for (var i = 0; i < data.Subscribers.Count; i++)
+            {
+                if (data.Subscribers[i].Action == null)
                 {
-                    SubscribersMap[type].RemoveAt(i);
+                    data.Subscribers.RemoveAt(i);
                 }
                 else
                 {
-                    subscriber.Action.Invoke();
+                    data.Subscribers[i].Action.Invoke();
                 }
             }
         }
