@@ -1,4 +1,4 @@
-﻿namespace NTC.Global.StateMachine
+﻿namespace NTC.GlobalStateMachine
 {
     public sealed class RunningState : GameState
     {

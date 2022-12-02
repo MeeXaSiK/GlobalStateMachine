@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
     public readonly struct SubscribersData
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
     public abstract class StateMachineUser : MonoBehaviour
     {
@@ -13,17 +13,17 @@ namespace NTC.Global.StateMachine
 
         private void OnDestroy()
         {
-            NightStateMachine.RemoveSubscriber(gameObject);
+            this.RemoveSubscriber();
             
             OnDestroyOverridable();
         }
 
         private void BindCallbacks()
         {
-            NightStateMachine.On<RunningState>(OnGameRun, gameObject);
-            NightStateMachine.On<WinState>(OnGameWin, gameObject);
-            NightStateMachine.On<LoseState>(OnGameLose, gameObject);
-            NightStateMachine.On<WinState, LoseState>(OnGameFinish, gameObject);
+            this.On<RunningState>(OnGameRun);
+            this.On<WinState>(OnGameWin);
+            this.On<LoseState>(OnGameLose);
+            this.On<WinState, LoseState>(OnGameFinish);
         }
 
         protected virtual void OnAwake() { }

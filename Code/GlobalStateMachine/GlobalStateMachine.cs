@@ -1,17 +1,17 @@
-﻿// ---------------------------------------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------------------------------------------
 // The MIT License
-// NightStateMachine is a lightweight state machine for Unity https://github.com/MeeXaSiK/NightStateMachine
+// NightStateMachine is a lightweight global state machine for Unity https://github.com/MeeXaSiK/NightStateMachine
 // Copyright (c) 2022 Night Train Code
-// ---------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
 using NTC.Global.System;
 using UnityEngine;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
-    public static class NightStateMachine
+    public static class GlobalStateMachine
     {
         public static GameState LastGameState { get; private set; }
 
@@ -148,8 +148,8 @@ namespace NTC.Global.StateMachine
 
             if (gameState.CanRepeat == false && WasPushed<TState>())
                 return false;
-
-            return true;
+            
+            return LastGameState.IsNextStatePossible<TState>();
         }
 
         private static void Execute<TState>() where TState : GameState

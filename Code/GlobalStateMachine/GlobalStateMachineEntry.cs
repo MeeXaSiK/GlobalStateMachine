@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
-    public sealed class NightStateMachineEntry : MonoBehaviour
+    public sealed class GlobalStateMachineEntry : MonoBehaviour
     {
         [SerializeField] private GameStates stateOnStart = GameStates.None;
         
@@ -13,12 +13,12 @@ namespace NTC.Global.StateMachine
             
             var newState = stateOnStart.GetState();
 
-            NightStateMachine.Push(newState);
+            GlobalStateMachine.Push(newState);
         }
 
         private void OnDestroy()
         {
-            NightStateMachine.Reset();
+            GlobalStateMachine.Reset();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
     public static class StateUtils
     {

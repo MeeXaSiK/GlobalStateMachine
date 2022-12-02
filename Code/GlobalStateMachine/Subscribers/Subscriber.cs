@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace NTC.Global.StateMachine
+namespace NTC.GlobalStateMachine
 {
     public readonly struct Subscriber
     {
