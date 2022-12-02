@@ -1,8 +1,8 @@
-﻿// ----------------------------------------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------------------------------------------
 // The MIT License
-// NightStateMachine is a lightweight global state machine for Unity https://github.com/MeeXaSiK/NightStateMachine
+// GlobalStateMachine is a lightweight global state machine for Unity https://github.com/MeeXaSiK/GlobalStateMachine
 // Copyright (c) 2022 Night Train Code
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
