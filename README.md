@@ -51,9 +51,11 @@ Lightweight State Machine for Unity for global states such as Win or Lose.
 ```csharp
 GlobalStateMachine.Push(new WinState());
 ```
-or
 ```csharp
 GlobalStateMachine.Push<WinState>();
+```
+```csharp
+GlobalStateMachine.Push(GameStates.Win);
 ```
 
 ## Examples of using
@@ -83,10 +85,8 @@ Also you can get a new state by extension method `GetState()` of the `GameStates
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out PlayerUnit playerUnit))
-            {
-                var newState = stateToPush.GetState();
-                
-                GlobalStateMachine.Push(newState);
+            {                
+                GlobalStateMachine.Push(stateToPush);
             }
         }
     }
