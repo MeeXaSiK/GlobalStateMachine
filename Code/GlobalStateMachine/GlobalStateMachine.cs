@@ -82,6 +82,21 @@ namespace NTC.GlobalStateMachine
             Execute<TState>();
         }
 
+        public static void Push(GameStates state)
+        {
+            switch (state)
+            {
+                case GameStates.None: break;
+                case GameStates.Running: Push(new RunningState()); break;
+                case GameStates.Win: Push(new WinState()); break;
+                case GameStates.Lose: Push(new LoseState()); break;
+                case GameStates.Paused: Push(new PausedState()); break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+        }
+
         public static bool WasPushed<TState>() where TState : GameState
         {
             var count = PushedStates.Count;

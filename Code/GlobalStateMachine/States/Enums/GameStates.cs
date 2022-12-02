@@ -5,6 +5,7 @@
         None,
         Running,
         Win,
-        Lose
+        Lose,
+        Paused
     }
 }

@@ -11,9 +11,7 @@ namespace NTC.GlobalStateMachine
             if (stateOnStart == GameStates.None)
                 return;
             
-            var newState = stateOnStart.GetState();
-
-            GlobalStateMachine.Push(newState);
+            GlobalStateMachine.Push(stateOnStart);
         }
 
         private void OnDestroy()

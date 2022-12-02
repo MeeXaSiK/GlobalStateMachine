@@ -6,7 +6,6 @@
 
         protected override void BlockNextStates()
         {
-            BlockNextState<RunningState>();
             BlockNextState<WinState>();
         }
     }

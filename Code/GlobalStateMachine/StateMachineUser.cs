@@ -23,6 +23,7 @@ namespace NTC.GlobalStateMachine
             this.On<RunningState>(OnGameRun);
             this.On<WinState>(OnGameWin);
             this.On<LoseState>(OnGameLose);
+            this.On<PausedState>(OnGamePause);
             this.On<WinState, LoseState>(OnGameFinish);
         }
 
@@ -31,6 +32,7 @@ namespace NTC.GlobalStateMachine
         protected virtual void OnGameRun() { }
         protected virtual void OnGameWin() { }
         protected virtual void OnGameLose() { }
+        protected virtual void OnGamePause() { }
         protected virtual void OnGameFinish() { }
     }
 }
