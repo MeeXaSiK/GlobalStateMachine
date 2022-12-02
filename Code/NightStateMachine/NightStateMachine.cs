@@ -1,4 +1,10 @@
-﻿using System;
+﻿// ------------------------------------------------------------------------------------
+// The MIT License
+// NightPool is an object pool for Unity https://github.com/MeeXaSiK/NightStateMachine
+// Copyright (c) 2022 Night Train Code
+// ------------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using NTC.Global.System;
 using UnityEngine;
