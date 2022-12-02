@@ -43,6 +43,11 @@ Lightweight State Machine for Unity for global states such as Win or Lose.
         {
             Debug.Log("You Finished");
         }
+        
+        protected override void OnGamePause()
+        {
+            Debug.Log("Game Paused");
+        }
     }
 ```
 
@@ -181,8 +186,9 @@ this.On<CustomState>(OnCustomState);
             this.On<RunningState>(OnGameRun);
             this.On<WinState>(OnGameWin);
             this.On<LoseState>(OnGameLose);
+            this.On<PausedState>(OnGamePause);
             this.On<WinState, LoseState>(OnGameFinish);
-
+            
             this.On<CustomState>(OnCustomState); // <<< Bind Callback For The New Custom State
         }
 
@@ -191,6 +197,7 @@ this.On<CustomState>(OnCustomState);
         protected virtual void OnGameRun() { }
         protected virtual void OnGameWin() { }
         protected virtual void OnGameLose() { }
+        protected virtual void OnGamePause() { }
         protected virtual void OnGameFinish() { }
         
         protected virtual void OnCustomState() { } // <<< Virtual Method For The New Custom State
