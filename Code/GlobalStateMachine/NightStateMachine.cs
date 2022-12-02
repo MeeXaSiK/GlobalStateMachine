@@ -21,7 +21,7 @@ namespace NTC.Global.StateMachine
         private static readonly List<GameState> PushedStates = 
             new List<GameState>(32);
         
-        public static void On<TState>(in Action action, GameObject owner = null) where TState : GameState
+        public static void On<TState>(Action action, GameObject owner = null) where TState : GameState
         {
             var gameStateIndex = GetInfo<TState>.Index;
             var newSubscriber = new Subscriber(owner, action);
@@ -36,7 +36,7 @@ namespace NTC.Global.StateMachine
             data.Subscribers.Add(newSubscriber);
         }
 
-        public static void On<TState1, TState2>(in Action action, GameObject owner = null) 
+        public static void On<TState1, TState2>(Action action, GameObject owner = null) 
             where TState1 : GameState
             where TState2 : GameState
         {
@@ -44,7 +44,7 @@ namespace NTC.Global.StateMachine
             On<TState2>(action, owner);
         }
         
-        public static void On<TState1, TState2, TState3>(in Action action, GameObject owner = null) 
+        public static void On<TState1, TState2, TState3>(Action action, GameObject owner = null) 
             where TState1 : GameState
             where TState2 : GameState
             where TState3 : GameState
@@ -54,7 +54,7 @@ namespace NTC.Global.StateMachine
             On<TState3>(action, owner);
         }
         
-        public static void On<TState1, TState2, TState3, TState4>(in Action action, GameObject owner = null) 
+        public static void On<TState1, TState2, TState3, TState4>(Action action, GameObject owner = null) 
             where TState1 : GameState
             where TState2 : GameState
             where TState3 : GameState

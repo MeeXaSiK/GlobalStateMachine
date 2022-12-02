@@ -8,7 +8,7 @@ namespace NTC.Global.StateMachine
         public readonly GameObject Owner;
         public readonly Action Action;
 
-        public Subscriber(GameObject owner, in Action action)
+        public Subscriber(GameObject owner, Action action)
         {
             Owner = owner;
             Action = action;
