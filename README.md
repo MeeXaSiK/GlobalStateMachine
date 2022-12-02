@@ -9,7 +9,9 @@
 
 ## How to use
 
-1. Inherit script from `StateMachineUser` and override the methods you need
+1. Write using `using NTC.Global.StateMachine`
+
+2. Inherit script from `StateMachineUser` and override the methods you need
 
 ```csharp
     public class SendMessageOnWinAndLose : StateMachineUser
@@ -17,6 +19,11 @@
         protected override void OnAwake()
         {
             Debug.Log("On Awake");
+        }
+        
+        protected override void OnDestroyOverridable()
+        {
+            Debug.Log("On Destroy");
         }
 
         protected override void OnGameWin()
@@ -36,13 +43,17 @@
     }
 ```
 
-2. Push state you need
+3. Push state you need
 
 ```csharp
 NightStateMachine.Push(new WinState());
 ```
+or
+```csharp
+NightStateMachine.Push<WinState>();
+```
 
-## How to add a new custom state
+## How to add a custom states and methods
 
 1. Create a new `class` and inherit one from `GameState`
 
@@ -50,19 +61,28 @@ NightStateMachine.Push(new WinState());
 public sealed class CustomState : GameState { }
 ```
 
-2. Open `StateMachineUser` and write a virtual method for new State 
+2. Optionally you can override the `CanRepeat` parameter (default value is `false`)
+
+```csharp
+public sealed class CustomState : GameState 
+{
+    public override bool CanRepeat => false;
+}
+```
+
+3. Open `StateMachineUser` and write a virtual method for new State 
 
 ```csharp
 protected virtual void OnCustomState() { }
 ```
 
-3. Bind callback for new state in method `BindCallbacks()`
+4. Bind callback for new state in method `BindCallbacks()`
 
 ```csharp
 NightStateMachine.On<CustomState>(OnCustomState, gameObject);
 ```
 
-4. What should be the end result:
+5. What should be the end result:
 
 ```csharp
     public abstract class StateMachineUser : MonoBehaviour
