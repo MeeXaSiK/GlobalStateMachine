@@ -61,7 +61,7 @@ NightStateMachine.Push<WinState>();
 public sealed class CustomState : GameState { }
 ```
 
-2. Optionally you can override the `CanRepeat` parameter (default value is `false`)
+2. Optionally you can override the `CanRepeat` parameter (default value is `true`)
 
 ```csharp
 public sealed class CustomState : GameState 
