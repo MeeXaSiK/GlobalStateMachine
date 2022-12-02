@@ -83,7 +83,7 @@ You can push any state if entity is in the trigger
 Also you can get a new state by extension method `GetState()` of the `GameStates` enum
 
 ```csharp
-    public class PushStateOnTriggerEnter : MonoBehaviour
+    public class PushStateOnPlayerEnter : MonoBehaviour
     {
         [SerializeField] private GameStates stateToPush = GameStates.Win;
         
