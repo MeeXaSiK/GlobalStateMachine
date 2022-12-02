@@ -135,7 +135,7 @@ public sealed class CustomState : GameState
 ```csharp
 public sealed class CustomState : GameState
 {
-    protected override List<GameState> BlockedNextStates { get; } = new List<GameState>()
+    protected override List<GameState> BlockedNextStates => new List<GameState>()
     {
         new WinState(), 
         new LoseState()
