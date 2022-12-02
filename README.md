@@ -94,6 +94,13 @@ NightStateMachine.On<CustomState>(OnCustomState, gameObject);
             OnAwake();
         }
 
+        private void OnDestroy()
+        {
+            NightStateMachine.RemoveSubscriber(gameObject);
+            
+            OnDestroyOverridable();
+        }
+
         private void BindCallbacks()
         {
             NightStateMachine.On<RunningState>(OnGameRun, gameObject);
@@ -103,8 +110,9 @@ NightStateMachine.On<CustomState>(OnCustomState, gameObject);
             
             NightStateMachine.On<CustomState>(OnCustomState, gameObject); // <<< Bind Callback For The New Custom State
         }
-        
+
         protected virtual void OnAwake() { }
+        protected virtual void OnDestroyOverridable() { }
         protected virtual void OnGameRun() { }
         protected virtual void OnGameWin() { }
         protected virtual void OnGameLose() { }
