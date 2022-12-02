@@ -13,22 +13,22 @@ namespace NTC.Global.StateMachine
 {
     public static class NightStateMachine
     {
+        public static GameState LastGameState { get; private set; }
+
         private static readonly List<SubscribersData> SubscribersMap = 
             new List<SubscribersData>(32);
         
         private static readonly List<GameState> PushedStates = 
             new List<GameState>(32);
-
-        private static GameState _lastGameState;
-
+        
         public static void On<TState>(in Action action, GameObject owner = null) where TState : GameState
         {
-            var index = GetInfo<TState>.Index;
+            var gameStateIndex = GetInfo<TState>.Index;
             var newSubscriber = new Subscriber(owner, action);
 
             if (TryGetSubscribersData<TState>(out var data) == false)
             {
-                data = new SubscribersData(index);
+                data = new SubscribersData(gameStateIndex);
 
                 SubscribersMap.Add(data);
             }
@@ -76,7 +76,7 @@ namespace NTC.Global.StateMachine
             if (IsStatePossible(gameState) == false)
                 return;
 
-            _lastGameState = gameState;
+            LastGameState = gameState;
             PushedStates.Add(gameState);
             
             Execute<TState>();
@@ -118,7 +118,7 @@ namespace NTC.Global.StateMachine
         
         public static void Reset()
         {
-            _lastGameState = null;
+            LastGameState = null;
             
             SubscribersMap.Clear();
             PushedStates.Clear();
@@ -126,11 +126,11 @@ namespace NTC.Global.StateMachine
 
         private static bool TryGetSubscribersData<TState>(out SubscribersData data) where TState : GameState
         {
-            var index = GetInfo<TState>.Index;
+            var gameStateIndex = GetInfo<TState>.Index;
             
             for (var i = 0; i < SubscribersMap.Count; i++)
             {
-                if (SubscribersMap[i].Index == index)
+                if (SubscribersMap[i].Index == gameStateIndex)
                 {
                     data = SubscribersMap[i];
                     return true;
@@ -143,7 +143,7 @@ namespace NTC.Global.StateMachine
         
         private static bool IsStatePossible<TState>(TState gameState) where TState : GameState
         {
-            if (_lastGameState == null)
+            if (LastGameState == null)
                 return true;
 
             if (gameState.CanRepeat == false && WasPushed<TState>())

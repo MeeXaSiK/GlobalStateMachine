@@ -7,10 +7,10 @@ namespace NTC.Global.StateMachine
         public readonly List<Subscriber> Subscribers;
         public readonly int Index;
 
-        public SubscribersData(int gameStateType)
+        public SubscribersData(int gameStateIndex)
         {
             Subscribers = new List<Subscriber>(32);
-            Index = gameStateType;
+            Index = gameStateIndex;
         }
     }
 }
