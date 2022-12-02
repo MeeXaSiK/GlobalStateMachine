@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------------------------------
 // The MIT License
-// NightPool is an object pool for Unity https://github.com/MeeXaSiK/NightStateMachine
+// NightStateMachine is an object pool for Unity https://github.com/MeeXaSiK/NightStateMachine
 // Copyright (c) 2022 Night Train Code
 // ------------------------------------------------------------------------------------
 
