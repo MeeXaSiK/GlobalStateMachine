@@ -1,5 +1,5 @@
-# StateMachine
->Lightweight State Machine for Unity
+# Global State Machine
+>Lightweight State Machine for Unity for global states such as Win or Lose.
 
 ## Installation
 
