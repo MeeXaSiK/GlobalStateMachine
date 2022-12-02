@@ -1,20 +1,23 @@
 # Global State Machine
->Lightweight State Machine for Unity for global states such as Win or Lose.
+
+Lightweight State Machine for Unity for global states such as Win or Lose.
+* Easy to use
+* Supports custom game states
+* Awesome performance
 
 ## Installation
 
-`1) Install files into your Unity Project`
-
-`2) Add "NightStateMachineEntry" on any GameObject in scene`
+1. Install files into your Unity Project
+2. Add `GlobalStateMachineEntry` on any `GameObject` in scene
 
 ## How to use
 
-1. Write using `using NTC.Global.StateMachine`
+1. Write using `using NTC.GlobalStateMachine`
 
 2. Inherit script from `StateMachineUser` and override the methods you need
 
 ```csharp
-    public class SendMessageOnWinAndLose : StateMachineUser
+    public class Sample : StateMachineUser
     {
         protected override void OnAwake()
         {
@@ -46,11 +49,68 @@
 3. Push state you need
 
 ```csharp
-NightStateMachine.Push(new WinState());
+GlobalStateMachine.Push(new WinState());
 ```
 or
 ```csharp
-NightStateMachine.Push<WinState>();
+GlobalStateMachine.Push<WinState>();
+```
+
+## Examples of using
+
+You can push any state if entity is in the trigger
+
+```csharp
+    public class PushWinStateOnPlayerEnter : MonoBehaviour
+    {
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out PlayerUnit playerUnit))
+            {
+                GlobalStateMachine.Push(new WinState());
+            }
+        }
+    }
+```
+
+Also you can get a new state by extension method `GetState()` of the `GameStates` enum
+
+```csharp
+    public class PushStateOnTriggerEnter : MonoBehaviour
+    {
+        [SerializeField] private GameStates stateToPush = GameStates.Win;
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out PlayerUnit playerUnit))
+            {
+                var newState = stateToPush.GetState();
+                
+                GlobalStateMachine.Push(newState);
+            }
+        }
+    }
+```
+
+For example, you can play audio on game win
+
+```csharp
+    public class PlayAudioOnWin : StateMachineUser
+    {
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip audioClip;
+
+        protected override void OnGameWin()
+        {
+            audioSource.PlayOneShot(audioClip);
+        }
+    }
+```
+
+You can check any state for pushed
+
+```csharp
+var isStatePushed = GlobalStateMachine.WasPushed<TState>();
 ```
 
 ## How to add a custom states and methods
@@ -70,19 +130,34 @@ public sealed class CustomState : GameState
 }
 ```
 
-3. Open `StateMachineUser` and write a virtual method for new State 
+3. Optionally you can block any next states for the `CustomState`
+
+```csharp
+public sealed class CustomState : GameState
+{
+    protected override List<GameState> BlockedNextStates { get; } = new List<GameState>()
+    {
+        new WinState(), 
+        new LoseState()
+    };
+        
+    public override bool CanRepeat => false;
+}
+```
+
+4. Open `StateMachineUser` and write a virtual method for new State 
 
 ```csharp
 protected virtual void OnCustomState() { }
 ```
 
-4. Bind callback for new state in method `BindCallbacks()`
+5. Bind callback for new state in method `BindCallbacks()`
 
 ```csharp
-NightStateMachine.On<CustomState>(OnCustomState, gameObject);
+this.On<CustomState>(OnCustomState);
 ```
 
-5. What should be the end result:
+6. What should be the end result:
 
 ```csharp
     public abstract class StateMachineUser : MonoBehaviour
@@ -96,19 +171,19 @@ NightStateMachine.On<CustomState>(OnCustomState, gameObject);
 
         private void OnDestroy()
         {
-            NightStateMachine.RemoveSubscriber(gameObject);
+            this.RemoveSubscriber();
             
             OnDestroyOverridable();
         }
 
         private void BindCallbacks()
         {
-            NightStateMachine.On<RunningState>(OnGameRun, gameObject);
-            NightStateMachine.On<WinState>(OnGameWin, gameObject);
-            NightStateMachine.On<LoseState>(OnGameLose, gameObject);
-            NightStateMachine.On<WinState, LoseState>(OnGameFinish, gameObject);
-            
-            NightStateMachine.On<CustomState>(OnCustomState, gameObject); // <<< Bind Callback For The New Custom State
+            this.On<RunningState>(OnGameRun);
+            this.On<WinState>(OnGameWin);
+            this.On<LoseState>(OnGameLose);
+            this.On<WinState, LoseState>(OnGameFinish);
+
+            this.On<CustomState>(OnCustomState); // <<< Bind Callback For The New Custom State
         }
 
         protected virtual void OnAwake() { }
