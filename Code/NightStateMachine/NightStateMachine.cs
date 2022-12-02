@@ -28,8 +28,6 @@ namespace NTC.Global.StateMachine
             }
             
             data.Subscribers.Add(newSubscriber);
-            
-            Debug.Log("Added");
         }
 
         public static void On<TState1, TState2>(in Action action, GameObject owner = null) 
