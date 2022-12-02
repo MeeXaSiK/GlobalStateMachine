@@ -1,8 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------
 // The MIT License
-// NightStateMachine is an object pool for Unity https://github.com/MeeXaSiK/NightStateMachine
+// NightStateMachine is a lightweight state machine for Unity https://github.com/MeeXaSiK/NightStateMachine
 // Copyright (c) 2022 Night Train Code
-// --------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
