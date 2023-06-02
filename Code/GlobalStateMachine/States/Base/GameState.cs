@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NTC.Global.System;
 using UnityEngine;
 
 namespace NTC.GlobalStateMachine
@@ -8,14 +7,14 @@ namespace NTC.GlobalStateMachine
     {
         public virtual bool CanRepeat => true;
 
-        private readonly List<int> _blockedNextStateIndexes = new List<int>();
+        private readonly List<int> _blockedNextStateIndexes = new List<int>(8);
         private bool _isBlockedStatesSetup;
 
         public virtual bool IsNextStatePossible<TState>() where TState : GameState
         {
             SetupBlockingNextStates();
             
-            var nextStateIndex = GetInfo<TState>.Index;
+            var nextStateIndex = StateIndex<TState>.Index;
 
             for (var i = 0; i < _blockedNextStateIndexes.Count; i++)
             {
@@ -35,7 +34,7 @@ namespace NTC.GlobalStateMachine
 
         protected void BlockNextState<TState>() where TState : GameState
         {
-            var nextStateIndex = GetInfo<TState>.Index;
+            var nextStateIndex = StateIndex<TState>.Index;
 
             for (var i = 0; i < _blockedNextStateIndexes.Count; i++)
             {

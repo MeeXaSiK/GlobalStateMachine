@@ -1,12 +1,11 @@
 ﻿// ------------------------------------------------------------------------------------------------------------------
 // The MIT License
 // GlobalStateMachine is a lightweight global state machine for Unity https://github.com/MeeXaSiK/GlobalStateMachine
-// Copyright (c) 2022 Night Train Code
+// Copyright (c) 2022-2023 Night Train Code
 // ------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using NTC.Global.System;
 using UnityEngine;
 
 namespace NTC.GlobalStateMachine
@@ -23,7 +22,7 @@ namespace NTC.GlobalStateMachine
         
         public static void On<TState>(Action action, GameObject owner = null) where TState : GameState
         {
-            var gameStateIndex = GetInfo<TState>.Index;
+            var gameStateIndex = StateIndex<TState>.Index;
             var newSubscriber = new Subscriber(owner, action);
 
             if (TryGetSubscribersData<TState>(out var data) == false)
@@ -141,7 +140,7 @@ namespace NTC.GlobalStateMachine
 
         private static bool TryGetSubscribersData<TState>(out SubscribersData data) where TState : GameState
         {
-            var gameStateIndex = GetInfo<TState>.Index;
+            var gameStateIndex = StateIndex<TState>.Index;
             
             for (var i = 0; i < SubscribersMap.Count; i++)
             {
